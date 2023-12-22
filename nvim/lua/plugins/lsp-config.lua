@@ -58,10 +58,10 @@ return {
 				group = vim.api.nvim_create_augroup('UserLspConfig', {}),
 				callback = function()
 					-- Keybindings
-					vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
-					vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, {})
-					vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {})
-					vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, {})
+					vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover' })
+					vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = 'Go to Declaration' })
+					vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { desc = 'Go to Implementation' })
+					vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { desc = 'View code actions' })
 				end,
 			})
 		end

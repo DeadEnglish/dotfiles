@@ -23,6 +23,8 @@ return {
 	},
 	config = function()
 		require("neo-tree").setup(options)
-		vim.keymap.set('n', '<C-n>', ':Neotree filesystem reveal right<CR>', {})
+		vim.keymap.set("n", "<Leader>tt", "<Cmd>Neotree reveal toggle<CR>", { desc = "Toggle file tree" })
+		vim.keymap.set("n", "<Leader>tc", "<Cmd>Neotree action=close source=filesystem<CR>", { desc = "Close file tree" })
+		vim.keymap.set("n", "<Leader>tf", "<Cmd>Neotree reveal action=focus<CR>", { desc = "Focus file tree" })
 	end,
 }
