@@ -1,5 +1,7 @@
 *.luarc.json
 
+github-copilot
+
 # Other folders
 raycast
 neofetch
