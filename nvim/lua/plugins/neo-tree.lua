@@ -6,8 +6,8 @@ local options = {
 			hide_dotfiles = false,
 			hide_gitignored = true,
 			hide_by_name = {
-				-- '.git',
-				-- '.DS_Store',
+				'.git',
+				'.DS_Store',
 			}
 		}
 	}
