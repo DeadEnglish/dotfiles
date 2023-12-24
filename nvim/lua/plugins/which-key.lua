@@ -1,5 +1,4 @@
 local options = {
-	truggers = { "<Leader>", "g" },
 	window = {
 		border = "rounded",
 	},
