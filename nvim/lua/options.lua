@@ -19,9 +19,3 @@ vim.opt.scrolloff = 8
 vim.opt.number = true
 vim.opt.numberwidth = 2
 vim.opt.relativenumber = true
-
--- Fold settings for Ufo
-vim.opt.foldcolumn = "1"
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = -1
-vim.opt.foldenable = true
