@@ -19,3 +19,7 @@ vim.opt.scrolloff = 8
 vim.opt.number = true
 vim.opt.numberwidth = 2
 vim.opt.relativenumber = true
+
+-- Spelling
+vim.opt.spelllang = "en_gb"
+vim.opt.spell = true
