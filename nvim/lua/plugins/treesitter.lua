@@ -1,5 +1,5 @@
 local options = {
-	higlight = { enable = true },
+	highlight = { enable = true },
 	indent = { enable = true },
 	ensure_installed = {
 		"astro",
@@ -11,11 +11,8 @@ local options = {
 		"markdown_inline",
 		"rust",
 		"scss",
-		"typescript"
-	},
-	context_commentstring = {
-		enable = true,
-		enable_autocmd = false,
+		"typescript",
+		"tsx",
 	},
 }
 
@@ -25,5 +22,5 @@ return {
 	config = function()
 		local config = require("nvim-treesitter.configs")
 		config.setup(options)
-	end
+	end,
 }
