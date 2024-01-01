@@ -106,7 +106,15 @@ return {
 			lspconfig.cssls.setup({})
 			lspconfig.html.setup({})
 			lspconfig.jsonls.setup({})
-			lspconfig.lua_ls.setup({})
+			lspconfig.lua_ls.setup({
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim", "bufnr" },
+						},
+					},
+				},
+			})
 			lspconfig.marksman.setup({})
 			lspconfig.tsserver.setup({})
 			lspconfig.rust_analyzer.setup({})
