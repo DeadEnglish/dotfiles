@@ -1,5 +1,5 @@
 *.luarc.json
-
+*.DS_Store
 github-copilot
 
 # Other folders
@@ -9,3 +9,6 @@ op
 
 # iterm2
 iterm2/AppSupport
+
+# oh-my-zsh
+zsh-custom/themes
