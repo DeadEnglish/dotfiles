@@ -1,0 +1,5 @@
+alias c="clear"
+alias gitrekt="git reset HEAD --hard"
+alias nuke="sudo rm -r ${1}"
+alias vim="nvim"
+alias gg="lazygit"
