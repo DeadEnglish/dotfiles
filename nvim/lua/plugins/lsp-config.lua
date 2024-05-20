@@ -56,6 +56,8 @@ local masonConfig = {
 		"cssls",
 		-- Diagnosticls
 		"diagnosticls",
+		-- GO
+		"gopls",
 		-- HTML
 		"html",
 		-- JSON
