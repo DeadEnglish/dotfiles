@@ -1,11 +1,8 @@
 return {
-	"github/copilot.vim",
+	"zbirenbaum/copilot-cmp",
+	event = { "BufEnter" },
+	dependencies = { "zbirenbaum/copilot.lua" },
 	config = function()
-		vim.cmd([[
-		imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
-		let g:copilot_no_tab_map = v:true
-]])
+		require("copilot_cmp").setup()
 	end
 }
-
-
