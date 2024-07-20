@@ -11,8 +11,9 @@ local options = {
 		"markdown_inline",
 		"rust",
 		"scss",
-		"typescript",
 		"tsx",
+		"typescript",
+		"vim",
 	},
 }
 
