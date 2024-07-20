@@ -1,13 +1,13 @@
 local format_group = vim.api.nvim_create_augroup("LspFormatGroup", {})
 local format_opts = { async = false, timeout_ms = 2500 }
 
-local function register_fmt_keymap(name, bufnr)
+local function register_fmt_keymap(name, buffer_number)
 	vim.keymap.set("n", "<leader>lp", function()
-		vim.lsp.buf.format(vim.tbl_extend("force", format_opts, { name = name, bufnr = bufnr }))
-	end, { desc = "Format current buffer [LSP]", buffer = bufnr })
+		vim.lsp.buf.format(vim.tbl_extend("force", format_opts, { name = name, buffer_number = buffer_number }))
+	end, { desc = "Format current buffer [LSP]", buffer = buffer_number })
 end
 
-local function fmt_cb(bufnr)
+local function fmt_cb(buffer_number)
 	return function(err, res, ctx)
 		if err then
 			local err_msg = type(err) == "string" and err or err.message
@@ -17,31 +17,31 @@ local function fmt_cb(bufnr)
 		end
 
 		-- don't apply results if buffer is unloaded or has been modified
-		if not vim.api.nvim_buf_is_loaded(bufnr) or vim.api.nvim_buf_get_option(bufnr, "modified") then
+		if not vim.api.nvim_buf_is_loaded(buffer_number) or vim.api.nvim_buf_get_option(buffer_number, "modified") then
 			return
 		end
 
 		if res then
 			local client = vim.lsp.get_client_by_id(ctx.client_id)
-			vim.lsp.util.apply_text_edits(res, bufnr, client and client.offset_encoding or "utf-16")
-			vim.api.nvim_buf_call(bufnr, function()
+			vim.lsp.util.apply_text_edits(res, buffer_number, client and client.offset_encoding or "utf-16")
+			vim.api.nvim_buf_call(buffer_number, function()
 				vim.cmd("silent noautocmd update")
 			end)
 		end
 	end
 end
 
-local function register_fmt_autosave(_, bufnr)
-	vim.api.nvim_clear_autocmds({ group = format_group, buffer = bufnr })
+local function register_fmt_autosave(_, buffer_number)
+	vim.api.nvim_clear_autocmds({ group = format_group, buffer = buffer_number })
 	vim.api.nvim_create_autocmd("BufWritePost", {
 		group = format_group,
-		buffer = bufnr,
+		buffer = buffer_number,
 		callback = function()
 			vim.lsp.buf_request(
-				bufnr,
+				buffer_number,
 				"textDocument/formatting",
 				vim.lsp.util.make_formatting_params({}),
-				fmt_cb(bufnr)
+				fmt_cb(buffer_number)
 			)
 		end,
 		desc = "Format on save [LSP]",
@@ -136,7 +136,7 @@ return {
 					settings = {
 						Lua = {
 							diagnostics = {
-								globals = { "vim", "bufnr" },
+								globals = { "vim", "buffer_number" },
 							},
 						},
 					},
@@ -188,15 +188,63 @@ return {
 					-- Keybindings
 					vim.keymap.set(
 						"n",
-						"gt",
-						vim.lsp.buf.type_definition,
-						{ desc = "Go to type definition", buffer = bufnr }
+						"<leader>rn",
+						vim.lsp.buf.rename,
+						{ desc = "rename", buffer = buffer_number, noremap = true, silent = true }
 					)
-					vim.keymap.set("n", "T", vim.lsp.buf.type_definition, { desc = "Go to type definition" })
-					vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
-					vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Go to Declaration" })
-					vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to Implementation" })
-					vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "View code actions" })
+					vim.keymap.set(
+						{ "n" },
+						"<leader>ca",
+						vim.lsp.buf.code_action,
+						{ desc = "View code actions", buffer = buffer_number }
+					)
+					vim.keymap.set(
+						"n",
+						"gd",
+						vim.lsp.buf.definition,
+						{ desc = "Go to definition", buffer = buffer_number }
+					)
+
+					-- Telescope specific
+					vim.keymap.set(
+						"n",
+						"gr",
+						require("telescope.builtin").lsp_references,
+						{ desc = "Go to implementation", buffer = buffer_number }
+					)
+					vim.keymap.set(
+						"n",
+						"gi",
+						require("telescope.builtin").lsp_implementations,
+						{ desc = "Go to implementation", buffer = buffer_number }
+					)
+
+					vim.keymap.set(
+						"n",
+						"<leader>bs",
+						require("telescope.builtin").lsp_document_symbols,
+						{ desc = "Buffer symbols", buffer = buffer_number }
+					)
+
+					vim.keymap.set(
+						"n",
+						"<leader>ps",
+						require("telescope.builtin").lsp_workspace_symbols,
+						{ desc = "Project symbo", buffer = buffer_number }
+					)
+
+					vim.keymap.set(
+						"n",
+						"<leader>k",
+						vim.lsp.buf.signature_help,
+						{ desc = "Signature Documentation", buffer = buffer_number }
+					)
+					vim.keymap.set(
+						"n",
+						"<C-k>",
+						vim.lsp.buf.signature_help,
+						{ desc = "Signature Documentation", buffer = buffer_number }
+					)
 				end,
 			})
 
