@@ -2,12 +2,11 @@ return {
 	"hrsh7th/nvim-cmp",
 	event = { "BufReadPost", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
 		{
 			"L3MON4D3/LuaSnip",
-			version = "v2.3"
+			version = "v2.3",
 		},
 		"saadparwaiz1/cmp_luasnip",
 		"rafamadriz/friendly-snippets",
@@ -47,9 +46,9 @@ return {
 			}),
 			sources = cmp.config.sources({
 				{ name = "nvim_lsp" },
-				{ name = "buffer",  max_item_count = 5 },
+				{ name = "buffer", max_item_count = 5 },
 				{ name = "copilot" },
-				{ name = "path",    max_item_count = 3 },
+				{ name = "path", max_item_count = 3 },
 				{ name = "luasnip" },
 			}),
 			formatting = {

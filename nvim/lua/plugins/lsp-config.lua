@@ -48,14 +48,18 @@ local function register_fmt_autosave(_, bufnr)
 	})
 end
 
-local masonConfig = {
+local mason_config = {
+	ui = {
+		border = "rounder",
+	},
+}
+
+local mason_lsp_config = {
 	ensure_installed = {
 		-- Astro
 		"astro",
 		-- CSS
 		"cssls",
-		-- Diagnosticls
-		"diagnosticls",
 		-- GO
 		"gopls",
 		-- HTML
@@ -68,15 +72,13 @@ local masonConfig = {
 		"marksman",
 		-- Typescript
 		"tsserver",
-		-- Rust
-		"rust_analyzer",
 		-- YAML
 		"yamlls",
 	},
 	automatic_installation = true,
 }
 
-local masonToolInstallerConfig = {
+local mason_tool_installer_config = {
 	ensure_installed = {
 		"stylua",
 		"prettier",
@@ -86,42 +88,98 @@ local masonToolInstallerConfig = {
 
 return {
 	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
-		end,
-	},
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup(masonConfig)
-		end,
-	},
-	{
 		"neovim/nvim-lspconfig",
+		event = { "BufReadPost" },
+		cmd = { "LspInfo", "LspInstall", "LspUninstall", "Mason" },
+		dependencies = {
+			"williamboman/mason.nvim",
+			"williamboman/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer",
+			"hrsh7th/cmp-nvim-lsp",
+		},
 		config = function()
-			local lspconfig = require("lspconfig")
+			require("mason").setup(mason_config)
+			-- setup with ensure installed files
+			require("mason-tool-installer").setup(mason_tool_installer_config)
+			require("mason-lspconfig").setup(mason_lsp_config)
 
-			-- Setup default LSPs
-			lspconfig.lua_ls.setup({})
-			lspconfig.astro.setup({})
-			lspconfig.cssls.setup({})
-			lspconfig.html.setup({})
-			lspconfig.jsonls.setup({})
-			lspconfig.lua_ls.setup({
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim", "bufnr" },
+			-- Default handlers for LSP
+			local default_handlers = {
+				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
+				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
+			}
+
+			local function tsserver_on_publish_diagnostics_override(_, result, ctx, config)
+				local filtered_diagnostics = {}
+
+				for _, diagnostic in ipairs(result.diagnostics) do
+					local found = false
+					if not found then
+						table.insert(filtered_diagnostics, diagnostic)
+					end
+				end
+
+				result.diagnostics = filtered_diagnostics
+
+				vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
+			end
+
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
+			local servers = {
+				astro = {},
+				cssls = {},
+				html = {},
+				jsonls = {},
+				lua_ls = {
+					settings = {
+						Lua = {
+							diagnostics = {
+								globals = { "vim", "bufnr" },
+							},
 						},
 					},
 				},
-			})
-			lspconfig.marksman.setup({})
-			lspconfig.tsserver.setup({})
-			lspconfig.rust_analyzer.setup({})
-			lspconfig.yamlls.setup({})
-
+				marksman = {},
+				tsserver = {
+					settings = {
+						maxTsServerMemory = 12288,
+						typescript = {
+							inlayHints = {
+								includeInlayEnumMemberValueHints = true,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayFunctionParameterTypeHints = true,
+								includeInlayParameterNameHints = "all",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+								includeInlayPropertyDeclarationTypeHints = true,
+								includeInlayVariableTypeHints = true,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+							},
+						},
+						javascript = {
+							inlayHints = {
+								includeInlayEnumMemberValueHints = true,
+								includeInlayFunctionLikeReturnTypeHints = true,
+								includeInlayFunctionParameterTypeHints = true,
+								includeInlayParameterNameHints = "all",
+								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+								includeInlayPropertyDeclarationTypeHints = true,
+								includeInlayVariableTypeHints = true,
+								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+							},
+						},
+					},
+					handlers = {
+						["textDocument/publishDiagnostics"] = vim.lsp.with(
+							tsserver_on_publish_diagnostics_override,
+							{}
+						),
+					},
+				},
+				rust_analyzer = {},
+				yamlls = {},
+			}
 			-- Use LspAttach autocommand to only map the following keys
 			-- after the language server attaches to the current buffer
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -141,40 +199,47 @@ return {
 					vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "View code actions" })
 				end,
 			})
-		end,
-	},
-	{
-		"WhoIsSethDaniel/mason-tool-installer",
-		config = function()
-			require("mason-tool-installer").setup(masonToolInstallerConfig)
-		end,
-	},
-	{
-		"creativenull/diagnosticls-configs-nvim",
-		config = function()
-			local diagnosticls = require("diagnosticls-configs")
 
-			diagnosticls.init({
-				on_attach = function(_, bufnr)
-					register_fmt_keymap("diagnosticls", bufnr)
-					register_fmt_autosave("diagnosticls", bufnr)
-				end,
-			})
+			-- Iterate over our servers and set them up
+			for name, config in pairs(servers) do
+				require("lspconfig")[name].setup({
+					autostart = config.autostart,
+					cmd = config.cmd,
+					capabilities = capabilities,
+					filetypes = config.filetypes,
+					handlers = vim.tbl_deep_extend("force", {}, default_handlers, config.handlers or {}),
+					settings = config.settings,
+					root_dir = config.root_dir,
+				})
+			end
+			-- Configure borderd for LspInfo ui
+			require("lspconfig.ui.windows").default_options.border = "rounded"
 
-			local webConfigs = {
-				linter = require("diagnosticls-configs.linters.eslint_d"),
-				formatter = require("diagnosticls-configs.formatters.prettier"),
-			}
-
-			diagnosticls.setup({
-				javascript = webConfigs,
-				javascriptreact = webConfigs,
-				typescript = webConfigs,
-				typescriptreact = webConfigs,
-				lua = {
-					formatter = require("diagnosticls-configs.formatters.stylua"),
+			-- Configure diagnostics border
+			vim.diagnostic.config({
+				float = {
+					border = "rounded",
 				},
 			})
 		end,
+	},
+	{
+		"stevearc/conform.nvim",
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
+		opts = {
+			notify_on_error = false,
+			format_after_save = {
+				async = true,
+				timeout_ms = 500,
+				lsp_fallback = true,
+			},
+			formatters_by_ft = {
+				javascript = { { "prettier", "biome" } },
+				typescript = { { "prettier", "biome" } },
+				typescriptreact = { { "prettier", "biome" } },
+				lua = { "stylua" },
+			},
+		},
 	},
 }
