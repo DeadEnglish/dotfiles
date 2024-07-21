@@ -8,12 +8,19 @@ local options = {
 		"javascript",
 		"json",
 		"lua",
-		"markdown_inline",
+		"markdown",
 		"rust",
 		"scss",
 		"tsx",
 		"typescript",
 		"vim",
+		"yaml",
+	},
+	autopairs = {
+		enable = true,
+	},
+	autotag = {
+		enable = true,
 	},
 }
 
