@@ -3,9 +3,9 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move highlighted up" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move highlighted down" })
 
 -- Save with leader
-vim.keymap.set("n", "<leaader>w", "<cmd>w<cr>", { desc = "save" })
+vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "save" })
 -- quit with leader
-vim.keymap.set("n", "<leaader>q", "<cmd>q<cr>", { desc = "quit" })
+vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "quit" })
 
 -- Center buffer while navigating
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
