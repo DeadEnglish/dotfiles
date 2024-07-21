@@ -16,12 +16,6 @@ local options = {
 		"vim",
 		"yaml",
 	},
-	autopairs = {
-		enable = true,
-	},
-	autotag = {
-		enable = true,
-	},
 }
 
 return {
