@@ -1,53 +1,3 @@
-local format_group = vim.api.nvim_create_augroup("LspFormatGroup", {})
-local format_opts = { async = false, timeout_ms = 2500 }
-
-local function register_fmt_keymap(name, buffer_number)
-	vim.keymap.set("n", "<leader>lp", function()
-		vim.lsp.buf.format(vim.tbl_extend("force", format_opts, { name = name, buffer_number = buffer_number }))
-	end, { desc = "Format current buffer [LSP]", buffer = buffer_number })
-end
-
-local function fmt_cb(buffer_number)
-	return function(err, res, ctx)
-		if err then
-			local err_msg = type(err) == "string" and err or err.message
-			-- you can modify the log message / level (or ignore it completely)
-			vim.notify("formatting: " .. err_msg, vim.log.levels.WARN)
-			return
-		end
-
-		-- don't apply results if buffer is unloaded or has been modified
-		if not vim.api.nvim_buf_is_loaded(buffer_number) or vim.api.nvim_buf_get_option(buffer_number, "modified") then
-			return
-		end
-
-		if res then
-			local client = vim.lsp.get_client_by_id(ctx.client_id)
-			vim.lsp.util.apply_text_edits(res, buffer_number, client and client.offset_encoding or "utf-16")
-			vim.api.nvim_buf_call(buffer_number, function()
-				vim.cmd("silent noautocmd update")
-			end)
-		end
-	end
-end
-
-local function register_fmt_autosave(_, buffer_number)
-	vim.api.nvim_clear_autocmds({ group = format_group, buffer = buffer_number })
-	vim.api.nvim_create_autocmd("BufWritePost", {
-		group = format_group,
-		buffer = buffer_number,
-		callback = function()
-			vim.lsp.buf_request(
-				buffer_number,
-				"textDocument/formatting",
-				vim.lsp.util.make_formatting_params({}),
-				fmt_cb(buffer_number)
-			)
-		end,
-		desc = "Format on save [LSP]",
-	})
-end
-
 local mason_config = {
 	ui = {
 		border = "rounder",
@@ -276,7 +226,6 @@ return {
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo" },
 		opts = {
-			notify_on_error = false,
 			format_after_save = {
 				async = true,
 				timeout_ms = 500,
