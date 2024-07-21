@@ -35,7 +35,7 @@ vim.keymap.set({ "n", "v" }, "L", "$")
 vim.keymap.set({ "n", "v" }, "H", "^")
 
 -- Press 'U' for redo
-vim.keymap.set("n", "U", "<C-r>")
+vim.keymap.set("n", "U", "<C-r>", { desc = "Redo" })
 
 -- Turn off highlighted results
-vim.keymap.set("n", "<leader>no", "<cmd>noh<cr>")
+vim.keymap.set("n", "<leader>no", "<cmd>noh<cr>", { desc = "turn off results higlighting" })
