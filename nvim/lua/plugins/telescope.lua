@@ -19,8 +19,14 @@ return {
 		config = function()
 			require("telescope").setup(telescopeConfig)
 			local builtin = require("telescope.builtin")
+			local themes = require("telescope.themes")
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find in files" })
+			vim.keymap.set("n", "<leader>sc", function()
+				builtin.spell_suggest(themes.get_dropdown({
+					previewer = false,
+				}))
+			end, { desc = "spell check suggestions" })
 		end,
 	},
 	{
