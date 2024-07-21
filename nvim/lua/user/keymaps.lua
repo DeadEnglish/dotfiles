@@ -31,8 +31,8 @@ vim.keymap.set("n", "S", function()
 end)
 
 -- Press 'H', 'L' to jump to start/end of a line (first/last char)
-vim.keymap.set("n", "L", "$")
-vim.keymap.set("n", "H", "^")
+vim.keymap.set({ "n", "v" }, "L", "$")
+vim.keymap.set({ "n", "v" }, "H", "^")
 
 -- Press 'U' for redo
 vim.keymap.set("n", "U", "<C-r>")
