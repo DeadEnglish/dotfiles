@@ -29,3 +29,13 @@ vim.keymap.set("n", "S", function()
 	local keys = vim.api.nvim_replace_termcodes(cmd, true, false, true)
 	vim.api.nvim_feedkeys(keys, "n", false)
 end)
+
+-- Press 'H', 'L' to jump to start/end of a line (first/last char)
+vim.keymap.set("n", "L", "$")
+vim.keymap.set("n", "H", "^")
+
+-- Press 'U' for redo
+vim.keymap.set("n", "U", "<C-r>")
+
+-- Turn off highlighted results
+vim.keymap.set("n", "<leader>no", "<cmd>noh<cr>")

@@ -283,9 +283,9 @@ return {
 				lsp_fallback = true,
 			},
 			formatters_by_ft = {
-				javascript = { { "prettier", "biome" } },
-				typescript = { { "prettier", "biome" } },
-				typescriptreact = { { "prettier", "biome" } },
+				javascript = { "prettier", "biome", stop_after_first = true },
+				typescript = { "prettier", "biome", stop_after_first = true },
+				typescriptreact = { "prettier", "biome", stop_after_first = true },
 				lua = { "stylua" },
 			},
 		},
