@@ -1,6 +1,6 @@
 local mason_config = {
 	ui = {
-		border = "rounder",
+		border = "rounded",
 	},
 }
 
@@ -20,6 +20,8 @@ local mason_lsp_config = {
 		"lua_ls",
 		-- Markdown
 		"marksman",
+		-- Tailwind
+		"tailwindcss",
 		-- Typescript
 		"tsserver",
 		-- YAML
@@ -92,6 +94,7 @@ return {
 					},
 				},
 				marksman = {},
+				tailwindcss = {},
 				tsserver = {
 					settings = {
 						maxTsServerMemory = 12288,
@@ -160,13 +163,13 @@ return {
 						"n",
 						"gr",
 						require("telescope.builtin").lsp_references,
-						{ desc = "Go to implementation", buffer = buffer_number }
+						{ desc = "Find all references", buffer = buffer_number }
 					)
 					vim.keymap.set(
 						"n",
 						"gi",
 						require("telescope.builtin").lsp_implementations,
-						{ desc = "Go to implementation", buffer = buffer_number }
+						{ desc = "find all implementations", buffer = buffer_number }
 					)
 
 					vim.keymap.set(
@@ -180,20 +183,13 @@ return {
 						"n",
 						"<leader>ps",
 						require("telescope.builtin").lsp_workspace_symbols,
-						{ desc = "Project symbo", buffer = buffer_number }
+						{ desc = "Project symbols", buffer = buffer_number }
 					)
-
 					vim.keymap.set(
 						"n",
 						"<leader>k",
-						vim.lsp.buf.signature_help,
-						{ desc = "Signature Documentation", buffer = buffer_number }
-					)
-					vim.keymap.set(
-						"n",
-						"<C-k>",
-						vim.lsp.buf.signature_help,
-						{ desc = "Signature Documentation", buffer = buffer_number }
+						vim.lsp.buf.hover,
+						{ desc = "Hover Documentation", buffer = buffer_number }
 					)
 				end,
 			})
