@@ -1,0 +1,56 @@
+###------------------------------------
+##   Window
+#--------------------------------------
+title = Ghostty
+background-opacity = 0.6
+background-blur-radius = 8
+window-padding-x = 8
+window-padding-y = 8
+window-theme = dark
+# Remove when TMUX proficient  
+# window-decoration = false
+window-padding-color = extend
+
+###------------------------------------
+##   Font
+#--------------------------------------
+font-family = JetBrainsMono Nerd Font
+font-style = Bold
+font-size = 14
+
+font-family-bold = JetBrainsMono Nerd Font
+font-family-italic = JetBrainsMono Nerd Font
+####------------------------------------
+##   Colour scheme
+#--------------------------------------
+# black
+palette = 0=#27272a
+palette = 8=#353539
+
+# red
+palette = 1=#ea83a5
+palette = 9=#f591b2
+
+# green
+palette = 2=#90b99f
+palette = 10=#9dc6ac
+
+# yellow
+palette = 3=#e6b99d
+palette = 11=#f0c5a9
+
+# blue
+palette = 4=#92a2d5
+palette = 12=#a6b6e9
+
+# purple
+palette = 5=#aca1cf
+palette = 13=#b9aeda
+
+# magenta
+palette = 6=#e29eca
+palette = 14=#ecaad6
+
+# white
+palette = 7=#c9c7cd
+palette = 15=#ffffff
