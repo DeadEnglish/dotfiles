@@ -23,7 +23,7 @@ local mason_lsp_config = {
 		-- Tailwind
 		"tailwindcss",
 		-- Typescript
-		"tsserver",
+		"ts_ls",
 		-- YAML
 		"yamlls",
 	},
@@ -61,7 +61,7 @@ return {
 				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
 			}
 
-			local function tsserver_on_publish_diagnostics_override(_, result, ctx, config)
+			local function ts_ls_on_publish_diagnostics_override(_, result, ctx, config)
 				local filtered_diagnostics = {}
 
 				for _, diagnostic in ipairs(result.diagnostics) do
@@ -95,7 +95,7 @@ return {
 				},
 				marksman = {},
 				tailwindcss = {},
-				tsserver = {
+				ts_ls = {
 					settings = {
 						maxTsServerMemory = 12288,
 						typescript = {
@@ -124,10 +124,7 @@ return {
 						},
 					},
 					handlers = {
-						["textDocument/publishDiagnostics"] = vim.lsp.with(
-							tsserver_on_publish_diagnostics_override,
-							{}
-						),
+						["textDocument/publishDiagnostics"] = vim.lsp.with(ts_ls_on_publish_diagnostics_override, {}),
 					},
 				},
 				rust_analyzer = {},
