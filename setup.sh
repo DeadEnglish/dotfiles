@@ -24,6 +24,7 @@ fi
 # Brew installs
 #####################
 brew install --cask ghostty
+brew install --cask spotify
 brew install awscli
 brew install bat
 brew install fastfetch
