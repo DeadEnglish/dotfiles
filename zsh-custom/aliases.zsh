@@ -1,3 +1,4 @@
+alias clear="clear && printf \"\e[H\ec\e[9999B\""
 alias c="clear"
 alias nuke="sudo rm -r ${1}"
 alias vim="nvim"
