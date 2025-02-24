@@ -28,8 +28,14 @@ brew install --cask iterm2
 brew install  gnupg
 brew install imagemagick --with-webp
 brew install pinentry-touchid
+brew install pinentry
+brew install multi-gitter
+brew install fastfetch
+brew install tree-sitter
+brew install tmux
 brew install lazygit
 brew install neovim
+brew install bat
 brew install ripgrep
 brew install wget --with-iri
 brew install awscli
@@ -37,14 +43,5 @@ brew install awscli
 # Cleanup brew install
 brew cleanup
 
-#####################
-# Setup npm using nvm
-#####################
-nvm install 20
-nvm alias default
-
-# install globals
-npm install -g prettier
-npm install -g typescript
-npm install -g ngrok
-
+# Run post setup
+sh ./post-setup.sh
