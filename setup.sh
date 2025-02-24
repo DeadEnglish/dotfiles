@@ -23,22 +23,23 @@ fi
 #####################
 # Brew installs
 #####################
-brew install git
-brew install --cask iterm2
-brew install  gnupg
-brew install imagemagick --with-webp
-brew install pinentry-touchid
-brew install pinentry
-brew install multi-gitter
-brew install fastfetch
-brew install tree-sitter
-brew install tmux
-brew install lazygit
-brew install neovim
-brew install bat
-brew install ripgrep
-brew install wget --with-iri
+brew install --cask ghostty
 brew install awscli
+brew install bat
+brew install fastfetch
+brew install git
+brew install gnupg
+brew install gpg2
+brew install imagemagick --with-webp
+brew install lazygit
+brew install multi-gitter
+brew install neovim
+brew install pinentry-mac
+brew install pinentry-touchid
+brew install ripgrep
+brew install tmux
+brew install tree-sitter
+brew install wget --with-iri
 
 # Cleanup brew install
 brew cleanup
