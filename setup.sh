@@ -20,27 +20,8 @@ else
 	brew upgrade
 fi
 
-#####################
-# Brew installs
-#####################
-brew install --cask ghostty
-brew install --cask spotify
-brew install awscli
-brew install bat
-brew install fastfetch
-brew install git
-brew install gnupg
-brew install gpg2
-brew install imagemagick --with-webp
-brew install lazygit
-brew install multi-gitter
-brew install neovim
-brew install pinentry-mac
-brew install pinentry-touchid
-brew install ripgrep
-brew install tmux
-brew install tree-sitter
-brew install wget --with-iri
+# run Brewfile
+brew bundle
 
 # Cleanup brew install
 brew cleanup
