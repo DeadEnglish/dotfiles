@@ -20,11 +20,16 @@ else
 	brew upgrade
 fi
 
-# run Brewfile
+# Run brewfile
 brew bundle
 
 # Cleanup brew install
 brew cleanup
+
+# Git global config
+git config --global user.name Liam Canetti
+git config --global user.email git@liamcanetti.co.uk
+git config --global commit.gpgsign true
 
 # Run post setup
 sh ./post-setup.sh
