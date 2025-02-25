@@ -9,7 +9,7 @@
 
 2. Run the below command to install everything required (see below if you face any issues)
 ```bash
-$ bash setup.sh
+bash setup.sh
 ```
 
 ### Additional setup
