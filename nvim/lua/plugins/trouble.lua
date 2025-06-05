@@ -2,13 +2,7 @@ return {
 	"folke/trouble.nvim",
 	cmd = "Trouble",
 	config = function()
-		vim.keymap.set("n", "<leader>tX", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
-		vim.keymap.set(
-			"n",
-			"<leader>tx",
-			"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-			{ desc = "Buffer Diagnostics (Trouble)" }
-		)
+		vim.keymap.set("n", "<leader>tx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
 		vim.keymap.set("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
 		vim.keymap.set(
 			"n",
@@ -18,6 +12,10 @@ return {
 		)
 		vim.keymap.set("n", "<leader>tL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
 		vim.keymap.set("n", "<leader>tQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
-		require("trouble").setup({ opts = { win = { wo = { wrap = true } } } })
+		require("trouble").setup({ opts = { symbols = {
+			win = {
+				type = "float",
+			},
+		} } })
 	end,
 }
