@@ -1,7 +1,7 @@
 #####################
 # Setup npm using nvm
 #####################
-nvm install 20
+nvm install 24
 nvm alias default
 
 # install globals
