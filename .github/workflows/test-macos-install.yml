@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  smoke:
+  test-install:
     runs-on: macos-latest
     timeout-minutes: 60
 
@@ -29,6 +29,8 @@ jobs:
           [[ "$(nvm current)" == "v24."* ]]
 
       - name: Verify global npm packages
+        shell: bash
         run: |
+          source "$HOME/.nvm/nvm.sh"
           npm list -g prettier --depth=0
           npm list -g typescript --depth=0
