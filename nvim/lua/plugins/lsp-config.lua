@@ -10,6 +10,8 @@ local mason_lsp_config = {
 		"astro",
 		-- CSS
 		"cssls",
+		-- ESLint
+		"eslint",
 		-- GO
 		"gopls",
 		-- HTML
@@ -82,6 +84,7 @@ return {
 			local servers = {
 				astro = {},
 				cssls = {},
+				eslint = {},
 				html = {},
 				jsonls = {},
 				lua_ls = {
@@ -208,6 +211,11 @@ return {
 
 			-- Configure diagnostics border
 			vim.diagnostic.config({
+				virtual_text = {
+					spacing = 2,
+					source = "if_many",
+					prefix = "●",
+				},
 				float = {
 					border = "rounded",
 				},
