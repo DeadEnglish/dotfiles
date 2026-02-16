@@ -26,4 +26,4 @@ Things I do but someones explains way better
 - (optional) Install any necessary fonts, I use [Berkeley Mono](https://usgraphics.com/products/berkeley-mono)
 
 ### Known issues
-- [ ] the default `.zshrc` file created by omzsh does not direct to the custom file in `/zsh-custom/.zshrc.config`, you will need to manually add this into the file
+- ??? probably lots

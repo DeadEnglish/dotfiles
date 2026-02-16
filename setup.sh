@@ -2,6 +2,8 @@
 
 set -e
 
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BREWFILE="Brewfile"
 
 ## Parse args
 for arg in "$@"; do
@@ -13,6 +15,16 @@ for arg in "$@"; do
   esac
 done
 
+ensure_custom_zshrc() {
+  local zshrc_file="$HOME/.zshrc"
+  local custom_config_file="$REPO_ROOT/zsh-custom/.zshrc.config"
+  local source_line="source \"$custom_config_file\""
+
+  if ! grep -Fqx "$source_line" "$zshrc_file"; then
+    printf '\n%s\n' "$source_line" >> "$zshrc_file"
+  fi
+}
+
 #####################
 # Dependencies
 #####################
@@ -20,6 +32,7 @@ done
 xcode-select --install
 # Omzsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+ensure_custom_zshrc
 # Bun
 curl -fsSL https://bun.sh/install | bash
 # nvm
