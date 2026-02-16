@@ -193,7 +193,7 @@ return {
 
 			-- Iterate over our servers and set them up
 			for name, config in pairs(servers) do
-				require("lspconfig")[name].setup({
+				vim.lsp.config(name, {
 					autostart = config.autostart,
 					cmd = config.cmd,
 					capabilities = capabilities,
