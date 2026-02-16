@@ -1,7 +1,7 @@
 local telescopeConfig = {
 	defaults = {
 		hidden = true,
-		file_ignore_patterns = { "node_modules", ".git", ".next" },
+		file_ignore_patterns = { "node_modules/.*", ".git/.*", ".next/.*", ".vscode/.*" },
 		path_display = "filename_first",
 	},
 	pickers = {
@@ -22,6 +22,9 @@ return {
 			local themes = require("telescope.themes")
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find in files" })
+			vim.keymap.set("n", "<leader>fb", builtin.buffers, {
+				desc = "Search recent buffers",
+			})
 			vim.keymap.set("n", "<leader>sc", function()
 				builtin.spell_suggest(themes.get_dropdown({
 					previewer = false,

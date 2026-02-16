@@ -2,7 +2,7 @@ return {
 	"folke/trouble.nvim",
 	cmd = "Trouble",
 	config = function()
-		vim.keymap.set("n", "<leader>tx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
+		vim.keymap.set("n", "<leader>tx", "<cmd>Trouble diagnostics<cr>", { desc = "Diagnostics (Trouble)" })
 		vim.keymap.set("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
 		vim.keymap.set(
 			"n",
