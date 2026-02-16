@@ -29,7 +29,9 @@ ensure_custom_zshrc() {
 # Dependencies
 #####################
 # Xcode
-xcode-select --install
+if ! xcode-select -p >/dev/null 2>&1; then
+  xcode-select --install
+fi
 # Omzsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 ensure_custom_zshrc

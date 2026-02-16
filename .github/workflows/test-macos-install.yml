@@ -1,0 +1,34 @@
+name: Test macOS Install
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate shell syntax
+        run: bash -n setup.sh post-setup.sh
+
+      - name: Run setup script
+        run: bash ./setup.sh
+
+      - name: Verify brew bundle baseline
+        run: brew bundle check --file=Brewfile
+
+      - name: Verify Node default version
+        shell: bash
+        run: |
+          source "$HOME/.nvm/nvm.sh"
+          nvm current
+          [[ "$(nvm current)" == "v24."* ]]
+
+      - name: Verify global npm packages
+        run: |
+          npm list -g prettier --depth=0
+          npm list -g typescript --depth=0
