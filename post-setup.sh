@@ -31,6 +31,7 @@ load_nvm() {
 load_nvm
 nvm install 24
 nvm alias default 24
+nvm use default
 
 # install globals
 npm install -g prettier
