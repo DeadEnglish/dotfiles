@@ -27,4 +27,3 @@ Things I do but someones explains way better
 
 ### Known issues
 - [ ] the default `.zshrc` file created by omzsh does not direct to the custom file in `/zsh-custom/.zshrc.config`, you will need to manually add this into the file
-- [ ] `post-setup.sh` file does not run correctly as `nvm` may not be sourced correctly.

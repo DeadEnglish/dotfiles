@@ -44,5 +44,5 @@ git config --global user.name Liam Canetti
 git config --global user.email git@liamcanetti.co.uk
 git config --global commit.gpgsign true
 
-# Run post setup
-sh ./post-setup.sh
+# Run post setup in a fresh shell so newly installed tooling is available
+bash -lc 'bash ./post-setup.sh'
