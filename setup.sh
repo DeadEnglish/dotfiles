@@ -1,5 +1,18 @@
 #!/bin/bash
 
+set -e
+
+
+## Parse args
+for arg in "$@"; do
+  case $arg in
+    --work)
+      BREWFILE="Brewfile.work"
+      shift
+      ;;
+  esac
+done
+
 #####################
 # Dependencies
 #####################
@@ -21,7 +34,7 @@ else
 fi
 
 # Run brewfile
-brew bundle
+brew bundle --file="$BREWFILE"
 
 # Cleanup brew install
 brew cleanup

@@ -1,0 +1,10 @@
+eval_all 'Brewfile'
+
+# Tap
+tap 'lindell/multi-gitter'
+
+# Brews
+brew 'lindell/multi-gitter/multi-gitter'
+
+# Cask
+cask 'figma'

@@ -9,8 +9,14 @@
 
 2. Run the below command to install everything required (see below if you face any issues)
 ```bash
-bash setup.sh
+bash ./setup.sh
 ```
+
+2a. If you need to install work related items, please see the `Brewfile.work` and install as follows
+```
+bash ./setup.sh --work
+```
+
 
 ### Additional setup
 Things I do but someones explains way better
@@ -21,5 +27,4 @@ Things I do but someones explains way better
 
 ### Known issues
 - [ ] the default `.zshrc` file created by omzsh does not direct to the custom file in `/zsh-custom/.zshrc.config`, you will need to manually add this into the file
-- [ ] When running the initial `setup.sh`, brew may require some commands to be run before brew can be properly found.
-- [ ] Simillarly above, the `post-setup.sh` file does not run correctly as `nvm` may not be sourced correctly.
+- [ ] `post-setup.sh` file does not run correctly as `nvm` may not be sourced correctly.
