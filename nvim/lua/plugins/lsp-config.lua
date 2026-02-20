@@ -43,7 +43,7 @@ local mason_tool_installer_config = {
 return {
 	{
 		"neovim/nvim-lspconfig",
-		event = { "BufReadPost" },
+		event = { "BufReadPre", "BufNewFile" },
 		cmd = { "LspInfo", "LspInstall", "LspUninstall", "Mason" },
 		dependencies = {
 			"williamboman/mason.nvim",
