@@ -9,7 +9,6 @@ local options = {
 		"json",
 		"lua",
 		"markdown",
-		"rust",
 		"scss",
 		"tsx",
 		"typescript",

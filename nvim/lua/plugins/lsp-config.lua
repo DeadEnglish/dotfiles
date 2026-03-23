@@ -130,7 +130,6 @@ return {
 						["textDocument/publishDiagnostics"] = vim.lsp.with(ts_ls_on_publish_diagnostics_override, {}),
 					},
 				},
-				rust_analyzer = {},
 				yamlls = {},
 			}
 			-- Use LspAttach autocommand to only map the following keys
