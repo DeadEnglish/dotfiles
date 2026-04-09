@@ -40,6 +40,9 @@ vim.keymap.set("n", "U", "<C-r>", { desc = "Redo" })
 -- Turn off highlighted results
 vim.keymap.set("n", "<leader>no", "<cmd>noh<cr>", { desc = "turn off results higlighting" })
 
+-- Undotree
+vim.keymap.set("n", "<leader>u", "<cmd>Undotree<cr>", { desc = "undo tree" })
+
 -- Diagnostic stuff
 local diagnostic_goto = function(next, severity)
 	local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev

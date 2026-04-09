@@ -50,3 +50,6 @@ vim.opt.signcolumn = "yes"
 
 -- enable copy to global clipboard
 vim.opt.clipboard = "unnamed,unnamedplus"
+
+-- Built-in optional tools
+vim.cmd("packadd nvim.undotree")

@@ -45,12 +45,12 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
-		cmd = { "LspInfo", "LspInstall", "LspUninstall", "Mason" },
+		cmd = { "Mason" },
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer",
-			"hrsh7th/cmp-nvim-lsp",
+			"saghen/blink.cmp",
 		},
 		config = function()
 			require("mason").setup(mason_config)
@@ -75,8 +75,7 @@ return {
 				vim.lsp.handlers["textDocument/publishDiagnostics"](_, result, ctx, config)
 			end
 
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local servers = {
 				astro = {},
@@ -148,25 +147,25 @@ return {
 			-- after the language server attaches to the current buffer
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-				callback = function()
+				callback = function(args)
 					-- Keybindings
 					vim.keymap.set(
 						"n",
 						"<leader>rn",
 						vim.lsp.buf.rename,
-						{ desc = "rename", buffer = buffer_number, noremap = true, silent = true }
+						{ desc = "rename", buffer = args.buf, noremap = true, silent = true }
 					)
 					vim.keymap.set(
 						{ "n" },
 						"<leader>ca",
 						vim.lsp.buf.code_action,
-						{ desc = "View code actions", buffer = buffer_number }
+						{ desc = "View code actions", buffer = args.buf }
 					)
 					vim.keymap.set(
 						"n",
 						"gd",
 						vim.lsp.buf.definition,
-						{ desc = "Go to definition", buffer = buffer_number }
+						{ desc = "Go to definition", buffer = args.buf }
 					)
 
 					-- Telescope specific
@@ -174,33 +173,33 @@ return {
 						"n",
 						"gr",
 						require("telescope.builtin").lsp_references,
-						{ desc = "Find all references", buffer = buffer_number }
+						{ desc = "Find all references", buffer = args.buf }
 					)
 					vim.keymap.set(
 						"n",
 						"gi",
 						require("telescope.builtin").lsp_implementations,
-						{ desc = "find all implementations", buffer = buffer_number }
+						{ desc = "find all implementations", buffer = args.buf }
 					)
 
 					vim.keymap.set(
 						"n",
 						"<leader>bs",
 						require("telescope.builtin").lsp_document_symbols,
-						{ desc = "Buffer symbols", buffer = buffer_number }
+						{ desc = "Buffer symbols", buffer = args.buf }
 					)
 
 					vim.keymap.set(
 						"n",
 						"<leader>ps",
 						require("telescope.builtin").lsp_workspace_symbols,
-						{ desc = "Project symbols", buffer = buffer_number }
+						{ desc = "Project symbols", buffer = args.buf }
 					)
 					vim.keymap.set(
 						"n",
 						"<leader>k",
 						vim.lsp.buf.hover,
-						{ desc = "Hover Documentation", buffer = buffer_number }
+						{ desc = "Hover Documentation", buffer = args.buf }
 					)
 					vim.keymap.set(
 						"n",
@@ -208,7 +207,7 @@ return {
 						function()
 							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 						end,
-						{ desc = "Toggle inlay hints", buffer = buffer_number }
+						{ desc = "Toggle inlay hints", buffer = args.buf }
 					)
 					vim.lsp.inlay_hint.enable(false)
 				end,
@@ -228,9 +227,6 @@ return {
 			end
 			-- Disable ts_ls to prevent it from auto-starting alongside vtsls
 			vim.lsp.enable("ts_ls", false)
-
-			-- Configure borderd for LspInfo ui
-			require("lspconfig.ui.windows").default_options.border = "rounded"
 
 			-- Configure diagnostics border
 			vim.diagnostic.config({
