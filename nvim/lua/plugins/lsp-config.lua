@@ -25,7 +25,7 @@ local mason_lsp_config = {
 		-- Tailwind
 		"tailwindcss",
 		-- Typescript
-		"ts_ls",
+		"vtsls",
 		-- YAML
 		"yamlls",
 	},
@@ -37,6 +37,7 @@ local mason_tool_installer_config = {
 		"stylua",
 		"prettier",
 		"eslint_d",
+		"goimports",
 	},
 }
 
@@ -57,13 +58,9 @@ return {
 			require("mason-tool-installer").setup(mason_tool_installer_config)
 			require("mason-lspconfig").setup(mason_lsp_config)
 
-			-- Default handlers for LSP
-			local default_handlers = {
-				["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" }),
-				["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" }),
-			}
+			vim.o.winborder = "rounded"
 
-			local function ts_ls_on_publish_diagnostics_override(_, result, ctx, config)
+			local function vtsls_on_publish_diagnostics_override(_, result, ctx, config)
 				local filtered_diagnostics = {}
 
 				for _, diagnostic in ipairs(result.diagnostics) do
@@ -75,7 +72,7 @@ return {
 
 				result.diagnostics = filtered_diagnostics
 
-				vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
+				vim.lsp.handlers["textDocument/publishDiagnostics"](_, result, ctx, config)
 			end
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -98,39 +95,54 @@ return {
 				},
 				marksman = {},
 				tailwindcss = {},
-				ts_ls = {
+				vtsls = {
 					settings = {
-						maxTsServerMemory = 12288,
 						typescript = {
+							tsserver = { maxTsServerMemory = 12288 },
 							inlayHints = {
-								includeInlayEnumMemberValueHints = true,
-								includeInlayFunctionLikeReturnTypeHints = true,
-								includeInlayFunctionParameterTypeHints = true,
-								includeInlayParameterNameHints = "all",
-								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayVariableTypeHints = true,
-								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+								enumMemberValues = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								parameterNames = { enabled = "all" },
+								parameterTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								variableTypes = { enabled = true },
 							},
 						},
 						javascript = {
 							inlayHints = {
-								includeInlayEnumMemberValueHints = true,
-								includeInlayFunctionLikeReturnTypeHints = true,
-								includeInlayFunctionParameterTypeHints = true,
-								includeInlayParameterNameHints = "all",
-								includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-								includeInlayPropertyDeclarationTypeHints = true,
-								includeInlayVariableTypeHints = true,
-								includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+								enumMemberValues = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								parameterNames = { enabled = "all" },
+								parameterTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								variableTypes = { enabled = true },
 							},
 						},
 					},
 					handlers = {
-						["textDocument/publishDiagnostics"] = vim.lsp.with(ts_ls_on_publish_diagnostics_override, {}),
+						["textDocument/publishDiagnostics"] = vtsls_on_publish_diagnostics_override,
 					},
 				},
 				yamlls = {},
+				gopls = {
+					settings = {
+						gopls = {
+							analyses = {
+								unusedparams = true,
+								shadow = true,
+							},
+							staticcheck = true,
+							hints = {
+								assignVariableTypes = true,
+								compositeLiteralFields = true,
+								constantValues = true,
+								functionTypeParameters = true,
+								parameterNames = true,
+								rangeVariableTypes = true,
+							},
+						},
+					},
+				},
 			}
 			-- Use LspAttach autocommand to only map the following keys
 			-- after the language server attaches to the current buffer
@@ -190,6 +202,15 @@ return {
 						vim.lsp.buf.hover,
 						{ desc = "Hover Documentation", buffer = buffer_number }
 					)
+					vim.keymap.set(
+						"n",
+						"<leader>ih",
+						function()
+							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+						end,
+						{ desc = "Toggle inlay hints", buffer = buffer_number }
+					)
+					vim.lsp.inlay_hint.enable(false)
 				end,
 			})
 
@@ -200,11 +221,14 @@ return {
 					cmd = config.cmd,
 					capabilities = capabilities,
 					filetypes = config.filetypes,
-					handlers = vim.tbl_deep_extend("force", {}, default_handlers, config.handlers or {}),
+					handlers = config.handlers,
 					settings = config.settings,
 					root_dir = config.root_dir,
 				})
 			end
+			-- Disable ts_ls to prevent it from auto-starting alongside vtsls
+			vim.lsp.enable("ts_ls", false)
+
 			-- Configure borderd for LspInfo ui
 			require("lspconfig.ui.windows").default_options.border = "rounded"
 
@@ -236,6 +260,7 @@ return {
 				typescript = { "prettier", "biome", stop_after_first = true },
 				typescriptreact = { "prettier", "biome", stop_after_first = true },
 				lua = { "stylua" },
+				go = { "goimports" },
 			},
 		},
 	},
