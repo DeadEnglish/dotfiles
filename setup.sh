@@ -59,5 +59,17 @@ git config --global user.name Liam Canetti
 git config --global user.email git@liamcanetti.co.uk
 git config --global commit.gpgsign true
 
+# Claude Code global config symlink
+CLAUDE_CONFIG_DIR="$HOME/.config/claude"
+CLAUDE_TARGET="$HOME/.claude/CLAUDE.md"
+
+# Back up existing ~/.claude/CLAUDE.md if it's a real file (not already a symlink)
+if [ -f "$CLAUDE_TARGET" ] && [ ! -L "$CLAUDE_TARGET" ]; then
+  cp "$CLAUDE_TARGET" "$CLAUDE_TARGET.backup-$(date +%Y%m%d)"
+fi
+
+mkdir -p "$CLAUDE_CONFIG_DIR"
+ln -sf "$CLAUDE_CONFIG_DIR/CLAUDE.md" "$CLAUDE_TARGET"
+
 # Run post setup in a fresh shell so newly installed tooling is available
 bash -lc 'bash ./post-setup.sh'
