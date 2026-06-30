@@ -98,6 +98,9 @@ return {
 					settings = {
 						typescript = {
 							tsserver = { maxTsServerMemory = 12288 },
+							preferences = {
+								importModuleSpecifier = "non-relative",
+							},
 							inlayHints = {
 								enumMemberValues = { enabled = true },
 								functionLikeReturnTypes = { enabled = true },
@@ -108,6 +111,9 @@ return {
 							},
 						},
 						javascript = {
+							preferences = {
+								importModuleSpecifier = "non-relative",
+							},
 							inlayHints = {
 								enumMemberValues = { enabled = true },
 								functionLikeReturnTypes = { enabled = true },

@@ -20,3 +20,13 @@ function setAwsProfile() {
   echo "Now using $AWS_PROFILE"
   echo "Credentials expire in $AWS_CREDENTIAL_EXPIRATION"
 }
+
+function claudeWorkTree() {
+  local branch="${1:?Usage: cworktree <branch-name>}"
+  local dirname="${branch//\//-}"
+  local worktree_path=".claude/worktrees/$dirname"
+
+  git worktree add "$worktree_path" -b "$branch" || return 1
+  cd "$worktree_path"
+  claude
+}
